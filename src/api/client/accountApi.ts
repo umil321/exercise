@@ -1,5 +1,6 @@
 import { type APIRequestContext, type APIResponse } from '@playwright/test';
 import { type UserData } from '../../data/factories';
+import { readJson } from '../helpers/readJson';
 import { type ApiResult } from '../models/account';
 
 export class AccountApi {
@@ -38,15 +39,7 @@ export class AccountApi {
   }
 
   private async toResult(response: APIResponse): Promise<ApiResult> {
-    const text = await response.text();
-    let body: { responseCode: number; message: string };
-    try {
-      body = JSON.parse(text);
-    } catch {
-      throw new Error(
-        `${response.url()} returned non-JSON (HTTP ${response.status()}): ${text.slice(0, 200)}`,
-      );
-    }
+    const body = await readJson<{ responseCode: number; message: string }>(response);
     return {
       httpStatus: response.status(),
       responseCode: body.responseCode,
