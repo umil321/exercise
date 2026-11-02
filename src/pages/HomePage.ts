@@ -15,4 +15,11 @@ export class HomePage {
   async goto(): Promise<void> {
     await this.page.goto('/');
   }
+
+  async viewProduct(productName: string): Promise<void> {
+    const card = this.page
+      .locator('.features_items .product-image-wrapper')
+      .filter({ hasText: productName });
+    await card.first().getByRole('link', { name: 'View Product' }).click();
+  }
 }

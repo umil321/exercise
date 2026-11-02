@@ -24,6 +24,26 @@ export interface UserData {
   mobileNumber: string;
 }
 
+export interface PaymentData {
+  nameOnCard: string;
+  cardNumber: string;
+  cvc: string;
+  expiryMonth: string;
+  expiryYear: string;
+}
+
+/** The demo site does not process payments, so any well-formed test card works. */
+export function buildPayment(overrides: Partial<PaymentData> = {}): PaymentData {
+  return {
+    nameOnCard: 'Test User',
+    cardNumber: '4111111111111111',
+    cvc: '123',
+    expiryMonth: '12',
+    expiryYear: '2030',
+    ...overrides,
+  };
+}
+
 /** Builds a user with a unique email so tests can run in parallel without colliding. */
 export function buildUser(overrides: Partial<UserData> = {}): UserData {
   const id = randomUUID().slice(0, 8);

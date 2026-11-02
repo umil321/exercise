@@ -1,28 +1,11 @@
 import { test, expect } from '../../src/fixtures/e2e.fixture';
-import { buildUser, type UserData } from '../../src/data/factories';
+import { buildUser } from '../../src/data/factories';
+import { useRegisteredUser } from '../../src/fixtures/registeredUser';
 
 test.describe('Login with correct credentials', () => {
-  let user: UserData | undefined;
-
-  // PRECONDITION: Registers a new user through the API, so the test does not depend on the signup UI.
-  test.beforeEach(async ({ accountApi }) => {
-    const newUser = buildUser();
-
-    const response = await accountApi.createAccount(newUser);
-    expect(response).toMatchObject({ responseCode: 201, message: 'User created!' });
-
-    user = newUser;
-  });
-
-  // POSTCONDITION: Deletes the user through the API so no accounts are left behind on the site.
-  test.afterEach(async ({ accountApi }) => {
-    if (!user) return; // the precondition failed, so there is nothing to delete
-
-    const response = await accountApi.deleteAccount(user.email, user.password);
-    expect(response).toMatchObject({ responseCode: 200, message: 'Account deleted!' });
-
-    user = undefined;
-  });
+  // PRECONDITION / POSTCONDITION: a user is created through the API before each test
+  // and deleted through the API after it.
+  const account = useRegisteredUser();
 
   test('logs in with correct email and password @smoke', async ({ page, homePage, loginPage }) => {
     await homePage.goto();
@@ -32,8 +15,8 @@ test.describe('Login with correct credentials', () => {
     await homePage.header.signupLoginLink.click();
     await expect(loginPage.loginHeading).toBeVisible();
 
-    await loginPage.login(user!.email, user!.password);
-    await expect(homePage.header.loggedInAs).toContainText(user!.name);
+    await loginPage.login(account.user.email, account.user.password);
+    await expect(homePage.header.loggedInAs).toContainText(account.user.name);
   });
 });
 
