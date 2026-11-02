@@ -12,7 +12,19 @@ export default defineConfig({
   workers: isCI ? 2 : 3,
   timeout: 30_000,
   expect: { timeout: 10_000 },
-  reporter: [['list'], ['html', { open: 'never' }], ...(isCI ? ([['github']] as const) : [])],
+  globalSetup: './src/config/globalSetup.ts',
+  reporter: [
+    ['list'],
+    ['html', { open: 'never' }],
+    [
+      'allure-playwright',
+      {
+        resultsDir: 'allure-results',
+        environmentInfo: { BASE_URL: env.baseUrl, NODE: process.version },
+      },
+    ],
+    ...(isCI ? ([['github']] as const) : []),
+  ],
   use: {
     baseURL: env.baseUrl,
     testIdAttribute: 'data-qa',
