@@ -11,11 +11,7 @@ export default defineConfig({
   workers: isCI ? 2 : undefined,
   timeout: 30_000,
   expect: { timeout: 10_000 },
-  reporter: [
-    ['list'],
-    ['html', { open: 'never' }],
-    ...(isCI ? ([['github']] as const) : []),
-  ],
+  reporter: [['list'], ['html', { open: 'never' }], ...(isCI ? ([['github']] as const) : [])],
   use: {
     baseURL: env.baseUrl,
     trace: 'on-first-retry',
