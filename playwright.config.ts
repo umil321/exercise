@@ -14,6 +14,7 @@ export default defineConfig({
   reporter: [['list'], ['html', { open: 'never' }], ...(isCI ? ([['github']] as const) : [])],
   use: {
     baseURL: env.baseUrl,
+    testIdAttribute: 'data-qa',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
