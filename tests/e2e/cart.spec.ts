@@ -3,7 +3,7 @@ import { test, expect } from '../../src/fixtures/e2e.fixture';
 test.describe('Cart', () => {
   const PRODUCT = { name: 'Blue Top', price: 'Rs. 500' };
   const QUANTITY = 4;
-  const EXPECTED_TOTAL = 'Rs. 2000'; 
+  const EXPECTED_TOTAL = 'Rs. 2000';
 
   test('cart shows the exact quantity chosen on the product page @smoke', async ({
     page,

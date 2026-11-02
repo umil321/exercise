@@ -1,13 +1,16 @@
 import { type Locator, type Page } from '@playwright/test';
+import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 
 export class HomePage {
   readonly header: Header;
+  readonly footer: Footer;
   readonly logo: Locator;
   readonly signupLoginLink: Locator;
 
   constructor(private readonly page: Page) {
     this.header = new Header(page);
+    this.footer = new Footer(page);
     this.logo = page.getByRole('link', { name: /Website for automation practice/i });
     this.signupLoginLink = this.header.signupLoginLink;
   }
