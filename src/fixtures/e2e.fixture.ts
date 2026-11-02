@@ -1,4 +1,5 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
+import { AccountApi } from '../api/client/accountApi';
 import { AccountResultPage } from '../pages/AccountResultPage';
 import { HomePage } from '../pages/HomePage';
 import { LoginPage } from '../pages/LoginPage';
@@ -9,6 +10,7 @@ type E2EFixtures = {
   loginPage: LoginPage;
   signupPage: SignupPage;
   accountResultPage: AccountResultPage;
+  accountApi: AccountApi;
 };
 
 export const test = base.extend<E2EFixtures>({
@@ -24,6 +26,9 @@ export const test = base.extend<E2EFixtures>({
   accountResultPage: async ({ page }, use) => {
     await use(new AccountResultPage(page));
   },
+  accountApi: async ({ request }, use) => {
+    await use(new AccountApi(request));
+  },
 });
 
-export { expect } from '@playwright/test';
+export { expect };

@@ -7,8 +7,9 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: isCI,
-  retries: isCI ? 2 : 0,
-  workers: isCI ? 2 : undefined,
+  retries: isCI ? 2 : 1,
+  // The public demo site returns "queue full" errors under heavy parallel load.
+  workers: isCI ? 2 : 3,
   timeout: 30_000,
   expect: { timeout: 10_000 },
   reporter: [['list'], ['html', { open: 'never' }], ...(isCI ? ([['github']] as const) : [])],

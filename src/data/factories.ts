@@ -43,7 +43,7 @@ export function buildUser(overrides: Partial<UserData> = {}): UserData {
     company: 'Company',
     address: 'Jurija gagarina 123',
     address2: 'Stan 11',
-    country: 'Serbia',
+    country: 'Singapore',
     state: 'Belgrade',
     city: 'Belgrade',
     zipcode: '11070',
