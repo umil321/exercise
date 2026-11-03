@@ -101,12 +101,18 @@ docs/         Test strategy and exploratory testing report
   each other and leave no accounts behind.
 - **Ads are blocked** in E2E tests because full-page ad overlays can swallow clicks.
 
-## CI
+## CI/CD
 
-GitHub Actions runs lint, type check, API tests, then E2E tests, and uploads the
-HTML report and traces as artifacts. See `.github/workflows/playwright.yml`.
+The pipeline (GitHub Actions, `.github/workflows/playwright.yml`) runs on every pull request and push to `main`, plus a nightly schedule:
+
+1. **Set up:** Node 20, `npm ci`, install Chromium.
+2. **Quality gate:** lint, type check, format check. A failure stops the run.
+3. **Tests:** API tests first (fast), then E2E tests. Pull requests run `@smoke` only; `main` and the nightly run the full suite.
+4. **Reports:** the Playwright HTML report (with traces, screenshots and videos) and the Allure report are uploaded as artifacts, even when tests fail.
+
+Setting `CI=true` (done by GitHub Actions) switches the config to 2 retries, 2 workers and `forbidOnly`. No secrets are needed, because the site under test is public.
 
 ## Further reading
 
-- [Test strategy](docs/TEST_STRATEGY.md)
-- [Exploratory testing report](docs/EXPLORATORY_REPORT.md)
+- [Test strategy]
+- [Exploratory testing report]
